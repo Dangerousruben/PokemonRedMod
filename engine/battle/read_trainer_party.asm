@@ -79,24 +79,14 @@ ReadTrainer:
 	pop hl
 	jr .AddUniqueMoves
 .AddMoves
+	ld bc, wEnemyMon1Moves
+.Loop
 	ld a, [hli]
 	cp $F4
 	jr z, .AddUniqueMoves
-	ld [wEnemyMon1Moves], a
-	ld a, [hli]
-	cp $F4
-	jr z, .AddUniqueMoves
-	ld [wEnemyMon1Moves + 1], a
-	ld a, [hli]
-	cp $F4
-	jr z, .AddUniqueMoves
-	ld [wEnemyMon1Moves + 2], a
-	ld a, [hli]
-	cp $F4
-	jr z, .AddUniqueMoves
-	ld [wEnemyMon1Moves + 3], a
-	ld a, [hli]
-	jr z, .AddUniqueMoves
+	ld [bc], a
+	inc bc
+	jr .Loop
 .SpecialTrainer
 ; if this code is being run:
 ; - each pokemon has a specific level
