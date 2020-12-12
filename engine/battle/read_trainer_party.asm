@@ -49,11 +49,13 @@ ReadTrainer:
 	ld a, [hli]
 	cp $FF ; is the trainer special?
 	jr z, .SpecialTrainer ; if so, check for special moves
+	cp $FA ; Has unique moves?
+	jr z, .AddUniqueMoves
 	ld [wCurEnemyLVL], a
 .LoopTrainerData
 	ld a, [hli]
 	and a ; have we reached the end of the trainer data?
-	jr z, .FinishUp
+	jp z, .FinishUp
 	ld [wcf91], a ; write species somewhere (XXX why?)
 	ld a, ENEMY_PARTY_DATA
 	ld [wMonDataLocation], a
@@ -61,6 +63,40 @@ ReadTrainer:
 	call AddPartyMon
 	pop hl
 	jr .LoopTrainerData
+.AddUniqueMoves
+	ld a, [hli]
+	and a
+	jp z, .FinishUp
+	cp $F4
+	jr z, .AddMoves
+	ld [wCurEnemyLVL], a
+	ld a, [hli]
+	ld [wcf91], a
+	ld a, ENEMY_PARTY_DATA
+	ld [wMonDataLocation], a
+	push hl
+	call AddPartyMon
+	pop hl
+	jr .AddUniqueMoves
+.AddMoves
+	ld a, [hli]
+	cp $F4
+	jr z, .AddUniqueMoves
+	ld [wEnemyMon1Moves], a
+	ld a, [hli]
+	cp $F4
+	jr z, .AddUniqueMoves
+	ld [wEnemyMon1Moves + 1], a
+	ld a, [hli]
+	cp $F4
+	jr z, .AddUniqueMoves
+	ld [wEnemyMon1Moves + 2], a
+	ld a, [hli]
+	cp $F4
+	jr z, .AddUniqueMoves
+	ld [wEnemyMon1Moves + 3], a
+	ld a, [hli]
+	jr z, .AddUniqueMoves
 .SpecialTrainer
 ; if this code is being run:
 ; - each pokemon has a specific level
