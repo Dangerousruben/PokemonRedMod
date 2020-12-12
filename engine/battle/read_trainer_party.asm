@@ -53,7 +53,7 @@ ReadTrainer:
 .LoopTrainerData
 	ld a, [hli]
 	and a ; have we reached the end of the trainer data?
-	jr z, .FinishUp
+	jp z, .FinishUp
 	ld [wcf91], a ; write species somewhere (XXX why?)
 	ld a, ENEMY_PARTY_DATA
 	ld [wMonDataLocation], a
@@ -77,7 +77,9 @@ ReadTrainer:
 	push hl
 	call AddPartyMon
 	pop hl
-	call AddMoves
+	ld a, [hl]
+	cp $F4
+	call z, AddMoves
 	jr .SpecialTrainer
 .AddLoneMove
 ; does the trainer have a single monster with a different move?
@@ -167,8 +169,6 @@ ReadTrainer:
 	ret
 AddMoves:
 	ld a, [hli]
-	cp $F4
-	ret nz
 	ld bc, wEnemyMon1Moves
 .Loop
 	ld a, [hli]
