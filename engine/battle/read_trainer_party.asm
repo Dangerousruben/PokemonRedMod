@@ -46,6 +46,7 @@ ReadTrainer:
 ; - if [wLoneAttackNo] != 0, one pokemon on the team has a special move
 ; else the first byte is the level of every pokemon on the team
 .IterateTrainer
+	ld d, 0
 	ld a, [hli]
 	cp $FF ; is the trainer special?
 	jr z, .SpecialTrainer ; if so, check for special moves
@@ -80,6 +81,7 @@ ReadTrainer:
 	ld a, [hl]
 	cp $F4
 	call z, AddMoves
+	inc d ; keep track of number of pokemon added
 	jr .SpecialTrainer
 .AddLoneMove
 ; does the trainer have a single monster with a different move?
@@ -168,8 +170,15 @@ ReadTrainer:
 	jr nz, .LastLoop ; repeat wCurEnemyLVL times
 	ret
 AddMoves:
-	ld a, [hli]
-	ld bc, wEnemyMon1Moves
+	inc hl
+	push hl
+	ld a, d
+	ld hl, wEnemyMon1Moves
+	ld bc, wEnemyMon2 - wEnemyMon1
+	call AddNTimes
+	ld b, h
+	ld c, l
+	pop hl
 .Loop
 	ld a, [hli]
 	cp $F4
