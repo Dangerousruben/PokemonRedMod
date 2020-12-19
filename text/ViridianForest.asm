@@ -6,6 +6,23 @@ _ViridianForestText1::
 	line "#MON fights!"
 	done
 
+_ViridianForestBattleText4::
+	text "Test! You have"
+	line "#MON! Come on!"
+	cont "Let's battle'em!"
+	done
+
+_ViridianForestEndBattleText4::
+	text "Test!"
+	line "CATERPIE can't"
+	cont "cut it!"
+	prompt
+
+_ViridianFrstAfterBattleText4::
+	text "Test! You'll scare"
+	line "the bugs away!"
+	done
+
 _ViridianForestBattleText1::
 	text "Hey! You have"
 	line "#MON! Come on!"
