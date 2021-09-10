@@ -170,11 +170,11 @@ ReadTrainer:
 	jr nz, .LastLoop ; repeat wCurEnemyLVL times
 	ret
 AddMoves:
-	inc hl
+	inc hl	;increment to move past the $F4, into the moves themselves
 	push hl
 	ld a, d
-	ld hl, wEnemyMon1Moves
-	ld bc, wEnemyMon2 - wEnemyMon1
+	ld hl, wEnemyMon1Moves	;get moves from pokemon number loaded in d
+	ld bc, wEnemyMon2 - wEnemyMon1	
 	call AddNTimes
 	ld b, h
 	ld c, l
