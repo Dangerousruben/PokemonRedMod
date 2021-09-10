@@ -5,6 +5,7 @@ INCLUDE "data/battle/set_damage_effects.asm"
 INCLUDE "data/battle/residual_effects_2.asm"
 INCLUDE "data/battle/always_happen_effects.asm"
 INCLUDE "data/battle/special_effects.asm"
+INCLUDE "engine/battle/good_trainer_ai.asm"
 
 SlidePlayerAndEnemySilhouettesOnScreen:
 	call LoadPlayerBackPic
@@ -2958,7 +2959,8 @@ SelectEnemyMove:
 	ld a, [wIsInBattle]
 	dec a
 	jr z, .chooseRandomMove ; wild encounter
-	callfar AIEnemyTrainerChooseMoves
+	call GoodAITrainerChoosesMove
+	jr .done
 .chooseRandomMove
 	push hl
 	call BattleRandom
